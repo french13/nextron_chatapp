@@ -1,4 +1,4 @@
-<p align="center"><img src="https://i.imgur.com/NZfsD1p.png"></p>
+<p align="center"><img src="https://i.imgur.com/NrkTPe9.png"></p>
 
 ## Usage
 
@@ -6,13 +6,13 @@
 
 ```
 # with npx
-$ npx create-nextron-app my-app --example basic-typescript
+$ npx create-nextron-app my-app --example with-ant-design
 
 # with yarn
-$ yarn create nextron-app my-app --example basic-typescript
+$ yarn create nextron-app my-app --example with-ant-design
 
 # with pnpx
-$ pnpx create-nextron-app my-app --example basic-typescript
+$ pnpx create-nextron-app my-app --example with-ant-design
 ```
 
 ### Install Dependencies
@@ -36,3 +36,7 @@ $ yarn dev (or `npm run dev` or `pnpm run dev`)
 # production build
 $ yarn build (or `npm run build` or `pnpm run build`)
 ```
+
+## Resources
+
+<https://ant.design>
