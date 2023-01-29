@@ -14,7 +14,7 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then((res)=>{
             alert(res.user.displayName+"님 반갑습니다")
-            router.push('/personalChat')
+            router.push('/searchUser')
         })
     }
 

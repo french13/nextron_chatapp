@@ -8,21 +8,14 @@ import PersonalChatRoom from '../components/PersonalChatRoom'
 
 
 const Name = styled.div`
-height  : 50%;
+height  : 100%;
 display : flex;
 justify-content : left;
 align-items : center;
 font-weight : 700
 `
 
-const Content = styled.div`
-height  : 50%;
-display : flex;
-justify-content : left;
-align-items : center;
-font-weight : 700;
-color : gray;
-`
+
 
 const centerStyle = {
   display: "flex",
@@ -70,7 +63,7 @@ const PersonalChat = () => {
     <div style={{ backgroundColor: "lightgray", padding: "10px 10px", position: "relative" }}>
       {
         openPersonalChatRoom &&
-        <PersonalChatRoom chatRoomId={chatRoomId}/>
+        <PersonalChatRoom chatRoomId={chatRoomId} />
       }
       {
         personalChatRoom && 
@@ -82,7 +75,6 @@ const PersonalChat = () => {
               </Col>
               <Col span={12}>
                 <Name>{item.member}</Name>
-                <Content>안녕하세요</Content>
               </Col>
               <Col span={4} style={centerStyle}>
                 <Button onClick={() => { setOpenPersonalChatRoom(true); setChatRoomId(item.id) }}>입장하기</Button>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Col, Input, Row } from 'antd'
-import { CheckOutlined } from '@ant-design/icons'
+import { CloseOutlined } from '@ant-design/icons'
 import { db, auth } from '../../firebase'
 import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp, onSnapshot } from "firebase/firestore";
-import Message from './Message'
+import { Router, useRouter } from 'next/router'
 
 const ChatRoom = styled.div`
 position : absolute;
@@ -16,21 +16,34 @@ top : 0;
 height : 92vh;
 `
 
+const Name = styled.div`
+font-weight : 700;
+`
+
+const Message = styled.div`
+background-color : yellow;
+display : inline-block;
+padding : 10px;
+border-radius : 10px;
+`
+
 const centerStyle = {
   display: "flex",
   justifyContent: "space-around",
   alignItems: "center"
 }
 
-interface message {
-  id : string;
-  message : string;
-  name : string;
-  time : string;
+
+const textLeft: React.CSSProperties = {
+  width: "100%",
+  textAlign: "left",
+  marginTop: "20px"
 }
-
-
-
+const textRight: React.CSSProperties = {
+  width: "100%",
+  textAlign: "right",
+  marginTop: "20px"
+}
 
 interface chatRoomId {
   chatRoomId: string
@@ -38,7 +51,9 @@ interface chatRoomId {
 
 const PersonalChatRoom = ({ chatRoomId }: chatRoomId) => {
   const [message, setMessage] = useState("")
-  const [messages, setMessages] =useState([])
+  const [messages, setMessages] = useState([])
+
+ const router = useRouter()
 
   useEffect(() => {
     onSnapshot(
@@ -53,46 +68,57 @@ const PersonalChatRoom = ({ chatRoomId }: chatRoomId) => {
     );
   }, [])
 
- 
 
 
-  const sendMessage = async()=>{
-    const subDoc = String(new Date().getTime()) 
 
-    await  setDoc(doc(db, "personalChat", chatRoomId, chatRoomId, subDoc), {
+  const sendMessage = async () => {
+    const subDoc = String(new Date().getTime())
+
+    await setDoc(doc(db, "personalChat", chatRoomId, chatRoomId, subDoc), {
       id: auth.currentUser.uid,
-      name : auth.currentUser.displayName,
+      name: auth.currentUser.displayName,
       message: message,
       time: serverTimestamp(),
     });
   }
 
-
+  
 
   console.log(chatRoomId)
   return (
-    <ChatRoom>
-      <Row style={{ height: "5%", backgroundColor: "blue" }}></Row>
-      <Row style={{ height: "85%", backgroundColor: "green", display: "flex", flexDirection: "column" }}>
-        {
-          messages && 
-          messages.map((item : message,i)=>{
-            return (
-             <Message item={item}/>
-            )
-          })
-        }
-      </Row>
-      <Row style={{ height: "10%", backgroundColor: "red" }}>
-        <Col span={18} style={centerStyle}>
-          <Input style={{margin : "auto 15px", height : "50%"}} onChange={(e)=>{setMessage(e.target.value)}} />
-        </Col>
-        <Col span={6}  style={centerStyle}>
-          <Button onClick={sendMessage} style={{margin : "auto 15px", height : "50%", width : "80%"}}>send</Button>
-        </Col>
+    
+        <ChatRoom>
+          <Row style={{ height: "5%", backgroundColor: "lightgray", borderBottom: "solid 1px gray" }}>
+            <Col span={4}>
+            </Col>
+            <Col style={centerStyle} span={16}>1대1 채팅방</Col>
+            <Col onClick={()=>{router.push('/personalChat')}} style={centerStyle} span={4}>
+              <CloseOutlined/>
+            </Col>
+          </Row>
+          <Row style={{ height: "88%", display: "flex", flexDirection: "column", padding: "15px 20px" }}>
+            {
+              messages &&
+              messages.map((item, i) => {
+                return (
+                  <div style={item.name == auth.currentUser.displayName ? textRight : textLeft}>
+                    <Name>{item.name}</Name>
+                    <Message>{item.message}</Message>
+                  </div>
+                )
+              })
+            }
+          </Row>
+          <Row style={{ height: "7%", backgroundColor: "lightgray" }} >
+            <Col span={18} style={centerStyle}>
+              <Input style={{ margin: "auto 10px", height: "70%" }} onChange={(e) => { setMessage(e.target.value) }} />
+            </Col>
+            <Col span={6} style={centerStyle}>
+              <Button onClick={sendMessage} style={{ margin: "auto 15px", height: "70%", width: "80%" }}>send</Button>
+            </Col>
 
-      </Row>
-    </ChatRoom>
+          </Row>
+        </ChatRoom> 
   )
 }
 
