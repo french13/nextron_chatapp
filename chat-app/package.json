@@ -12,12 +12,15 @@
   },
   "dependencies": {
     "electron-serve": "^1.1.0",
-    "electron-store": "^8.1.0"
+    "electron-store": "^8.1.0",
+    "firebase": "^9.16.0",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
+    "@types/styled-components": "^5.1.26",
     "antd": "^4.22.8",
     "electron": "^21.3.3",
     "electron-builder": "^23.6.0",
