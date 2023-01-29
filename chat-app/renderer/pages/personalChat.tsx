@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import {Col, Row} from 'antd'
-import {CheckOutlined} from '@ant-design/icons'
+import { Button, Col, Row } from 'antd'
+import { CheckOutlined } from '@ant-design/icons'
+import { db, auth } from '../../firebase'
+import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import PersonalChatRoom from '../components/PersonalChatRoom'
+
 
 const Name = styled.div`
 height  : 50%;
@@ -20,36 +24,79 @@ font-weight : 700;
 color : gray;
 `
 
-const centerStyle ={
-    display : "flex",
-    justifyContent : "space-around",
-    alignItems : "center"
-  }
-  
-  const userBox = {
-    backgroundColor : "white", 
-    marginTop : "10px", 
-    padding : "5px",
-    borderRadius : "5px"
-  }
-  
+const centerStyle = {
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center"
+}
+
+const userBox = {
+  backgroundColor: "white",
+  marginTop: "10px",
+  padding: "5px",
+  borderRadius: "5px"
+}
+
+
 
 const PersonalChat = () => {
+  const [personalChatRoom, setPersonalChatRoom] = useState([])
+  const [openPersonalChatRoom, setOpenPersonalChatRoom] = useState(false)
+  const [chatRoomId, setChatRoomId] = useState("")
+
+
+
+  const getPersonalChat = async () => {
+    const querySnapshot = await getDocs(collection(db, "personalChat"));
+    let box = []
+    querySnapshot.forEach((doc) => {
+      const chatMember = doc.data().member
+      if (chatMember.includes(auth.currentUser.displayName)) {
+        box.push(doc.data())
+      } else {
+        console.log(" 채팅방 없음")
+      }
+    });
+    setPersonalChatRoom(box)
+  }
+
+  useEffect(() => {
+    getPersonalChat()
+  }, [])
+
+
+
   return (
-    <div style={{ backgroundColor: "lightgray", padding: "10px 10px" }}>
-    <Row style={userBox}>
-    <Col span={4}>
-      <img src="/images/logo.png" alt="사진" width={60}/>
-    </Col>
-    <Col span={16}>
-      <Name>Mike</Name>
-      <Content>안녕하세요</Content>
-    </Col>
-    <Col span={4} style={centerStyle}>
-    <CheckOutlined />
-    </Col>
-  </Row>
-  </div>
+    <div style={{ backgroundColor: "lightgray", padding: "10px 10px", position: "relative" }}>
+      {
+        openPersonalChatRoom &&
+        <PersonalChatRoom chatRoomId={chatRoomId}/>
+      }
+      {
+        personalChatRoom && 
+        personalChatRoom.map((item, i) => {
+          return (
+            <Row key={item.id} style={userBox}>
+              <Col span={4}>
+                <img src="/images/logo.png" alt="사진" width={60} />
+              </Col>
+              <Col span={12}>
+                <Name>{item.member}</Name>
+                <Content>안녕하세요</Content>
+              </Col>
+              <Col span={4} style={centerStyle}>
+                <Button onClick={() => { setOpenPersonalChatRoom(true); setChatRoomId(item.id) }}>입장하기</Button>
+              </Col>
+              <Col span={4} style={centerStyle}>
+                <CheckOutlined />
+              </Col>
+            </Row>
+          )
+        })
+      }
+
+
+    </div>
   )
 }
 
