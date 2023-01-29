@@ -73,14 +73,11 @@ const PersonalChat = () => {
               <Col span={4}>
                 <img src="/images/logo.png" alt="사진" width={60} />
               </Col>
-              <Col span={12}>
+              <Col span={14}>
                 <Name>{item.member}</Name>
               </Col>
-              <Col span={4} style={centerStyle}>
+              <Col span={6} style={centerStyle}>
                 <Button onClick={() => { setOpenPersonalChatRoom(true); setChatRoomId(item.id) }}>입장하기</Button>
-              </Col>
-              <Col span={4} style={centerStyle}>
-                <CheckOutlined />
               </Col>
             </Row>
           )

@@ -86,13 +86,12 @@ const PersonalChatRoom = ({ chatRoomId }: chatRoomId) => {
 
   console.log(chatRoomId)
   return (
-    
         <ChatRoom>
           <Row style={{ height: "5%", backgroundColor: "lightgray", borderBottom: "solid 1px gray" }}>
             <Col span={4}>
             </Col>
             <Col style={centerStyle} span={16}>1대1 채팅방</Col>
-            <Col onClick={()=>{router.push('/personalChat')}} style={centerStyle} span={4}>
+            <Col style={centerStyle} span={4}>
               <CloseOutlined/>
             </Col>
           </Row>

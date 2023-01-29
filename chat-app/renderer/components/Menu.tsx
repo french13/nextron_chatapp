@@ -4,7 +4,7 @@ import { SearchOutlined, UserOutlined, TeamOutlined, EllipsisOutlined } from '@a
 import { useRouter } from 'next/router';
 
 const menuSizeStyle: React.CSSProperties = {
-    width: "25%",
+    width: "33.3%",
     textAlign: "center"
 }
 
@@ -28,9 +28,6 @@ const Menu = () => {
                 </Radio.Button>
                 <Radio.Button onClick={goLink} style={menuSizeStyle} value="groupChat">
                     <TeamOutlined />
-                </Radio.Button>
-                <Radio.Button onClick={goLink} style={menuSizeStyle} value="myPage">
-                    <EllipsisOutlined />
                 </Radio.Button>
             </Radio.Group>
         </Row>
