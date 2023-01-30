@@ -14,7 +14,7 @@ $ npm install && npm i
 
 ```
 서버 실행 (http://localhost:8888)
-$ npm start # or npm run dev
+$ npm run dev
 ```
 ```
 build
