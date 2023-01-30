@@ -71,17 +71,17 @@ const Menu = () => {
             <Row style={{ width: "100%" }}>
                 <Col span={8} style={menuSizeStyle}>
                     <Button style={userButton} onClick={() => { router.push('/searchUser') }} value="searchUser">
-                    <UserOutlined />
+                    유저<UserOutlined />
                     </Button>
                 </Col>
                 <Col span={8} style={menuSizeStyle}>
                     <Button  style={personalButton}  onClick={() => { router.push('/personalChat') }} value="personalChat">
-                    <MessageOutlined />
+                    1:1<MessageOutlined />
                     </Button>
                 </Col>
                 <Col span={8} style={menuSizeStyle}>
                     <Button  style={groupButton}  onClick={() => { router.push('/groupChat') }} value="groupChat" >
-                    <CommentOutlined />
+                   단체 <CommentOutlined />
                     </Button>
                 </Col>
             </Row>

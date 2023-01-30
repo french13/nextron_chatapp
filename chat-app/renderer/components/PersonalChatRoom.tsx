@@ -53,18 +53,33 @@ const messagesStyle: React.CSSProperties = {
   overflow: "scroll",
   backgroundColor: "rgb(104, 135, 197)"
 }
-const sendInput: React.CSSProperties ={
-   margin: "auto 10px", height: "70%", 
-   border : "solid 2px rgb(104, 135, 197)", 
-   borderRadius : "10px" 
-  }
+const sendInput: React.CSSProperties = {
+  margin: "auto 10px", height: "70%",
+  border: "solid 2px rgb(104, 135, 197)",
+  borderRadius: "10px"
+}
 
-const sendButton: React.CSSProperties = { 
-  margin: "auto 15px", 
-  height: "70%", width: "80%", 
-  backgroundColor:"rgb(104, 135, 197)", 
-  color : "white", 
-  borderRadius : "10px" 
+const sendButton: React.CSSProperties = {
+  margin: "auto 15px",
+  height: "70%", width: "80%",
+  backgroundColor: "rgb(104, 135, 197)",
+  color: "white",
+  borderRadius: "10px"
+}
+
+const deleteConfirm: React.CSSProperties = {
+  position: "absolute",
+  top: "30%",
+  left: "15%",
+  width: "70%",
+  height: "25%",
+  backgroundColor: "rgba(0,0,0,0.8)",
+  zIndex: 50,
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+  flexDirection: "column",
+  borderRadius: "15px"
 }
 
 interface chatRoomId {
@@ -76,7 +91,9 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
   const router = useRouter()
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState([])
+  const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false)
   const messaegesRef = useRef(null)
+  const inputRef = useRef(null)
 
 
   useEffect(() => {
@@ -90,13 +107,13 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
         setMessages(box)
       }
     )
-      setTimeout(()=>{
-        messaegesRef.current.scrollTop = messaegesRef.current.scrollHeight
-      }, 10)
-   
+    setTimeout(() => {
+      messaegesRef.current.scrollTop = messaegesRef.current.scrollHeight
+    }, 10)
+    inputRef.current.focus()
   }, [])
 
-  
+
 
   const sendMessage = async () => {
     const subDoc = String(new Date().getTime())
@@ -107,16 +124,16 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
       message: message,
       time: serverTimestamp(),
     });
-    setTimeout(()=>{
+    setTimeout(() => {
       messaegesRef.current.scrollTop = messaegesRef.current.scrollHeight
     }, 10)
     setMessage("")
   }
 
-  const send = (e : any)=>{
+  const send = (e: any) => {
 
-  
-    if(e.keyCode == 13){
+
+    if (e.keyCode == 13) {
       sendMessage()
     }
   }
@@ -125,24 +142,43 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
     setChatRoomId("")
   }
 
-  const deleteRoom = async()=>{
+  const deleteRoom = async () => {
     await deleteDoc(doc(db, "personalChat", chatRoomId))
-    .then(()=>{
-      setChatRoomId("")
-    })
+      .then(() => {
+        setChatRoomId("")
+        setOpenDeleteConfirm(false)
+      })
   }
 
-  
-  return (
 
+  return (
     <ChatRoom>
+      {
+        openDeleteConfirm &&
+        <div style={deleteConfirm}>
+          <div style={{ fontSize: "1rem", color: "white" }}>채팅방을 삭제하시겠습니까?</div>
+          <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+            <Button onClick={deleteRoom} style={{ width: "25%", margin: "10px", backgroundColor: "rgb(104, 135, 197)", border: "none", color: "white" }}>
+              확인
+            </Button>
+            <Button onClick={() => { setOpenDeleteConfirm(false) }} style={{ width: "25%", margin: "10px", backgroundColor: "rgb(240, 140, 142)", border: "none", color: "white" }}>
+              취소
+            </Button>
+          </div>
+
+        </div>
+      }
+
       <Row style={{ height: "5%", backgroundColor: "lightgray", borderBottom: "solid 1px gray" }}>
         <Col onClick={closeRoom} style={centerStyle} span={4}>
-          <LeftOutlined />
+          <Button style={{ border: "none", background: "none" }}>
+            <LeftOutlined />
+          </Button>
+
         </Col>
         <Col style={centerStyle} span={16}>1대1 채팅방</Col>
-        <Col style={centerStyle}  span={4}>
-          <button style={{border : "none", borderRadius : "10px", backgroundColor : "rgb(240, 140, 142)", color : "white"}} onClick={deleteRoom}>방 없애기</button>
+        <Col style={centerStyle} span={4}>
+          <Button onClick={() => { setOpenDeleteConfirm(true) }} style={{ border: "none", borderRadius: "10px", backgroundColor: "rgb(240, 140, 142)", color: "white" }}>방 없애기</Button>
         </Col>
       </Row>
       <div id="scroll" ref={messaegesRef} style={messagesStyle}>
@@ -158,9 +194,9 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
           })
         }
       </div>
-      <Row style={{ height: "7%", backgroundColor: "lightgray" }} >
+      <Row style={{ height: "7%", backgroundColor: "lightgray", position: "absolute",bottom: "20px", width : "100%" }} >
         <Col span={18} style={centerStyle}>
-          <Input value={message} style={sendInput}  onKeyDown={send} onChange={(e) => { setMessage(e.target.value)  }} />
+          <Input ref={inputRef} value={message} style={sendInput} onKeyDown={send} onChange={(e) => { setMessage(e.target.value) }} />
         </Col>
         <Col span={6} style={centerStyle}>
           <Button onClick={sendMessage} style={sendButton}>send</Button>
