@@ -54,18 +54,18 @@ const textRight: React.CSSProperties = {
   marginTop: "20px"
 }
 
-const sendInput: React.CSSProperties ={
-  margin: "auto 10px", height: "70%", 
-  border : "solid 2px rgb(104, 135, 197)", 
-  borderRadius : "10px" 
- }
- 
-const sendButton: React.CSSProperties = { 
- margin: "auto 15px", 
- height: "70%", width: "80%", 
- backgroundColor:"rgb(104, 135, 197)", 
- color : "white", 
- borderRadius : "10px" 
+const sendInput: React.CSSProperties = {
+  margin: "auto 10px", height: "70%",
+  border: "solid 2px rgb(104, 135, 197)",
+  borderRadius: "10px"
+}
+
+const sendButton: React.CSSProperties = {
+  margin: "auto 15px",
+  height: "70%", width: "80%",
+  backgroundColor: "rgb(104, 135, 197)",
+  color: "white",
+  borderRadius: "10px"
 }
 
 interface chatRoomId {
@@ -112,7 +112,19 @@ const GroupChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
       message: message,
       time: serverTimestamp(),
     });
+    setTimeout(() => {
+      messaegesRef.current.scrollTop = messaegesRef.current.scrollHeight
+    }, 10)
+    setMessage("")
   }
+
+  const send = (e: any) => {
+
+    if (e.keyCode == 13) {
+      sendMessage()
+    }
+  }
+
 
   const closeRoom = () => {
     setChatRoomId("")
@@ -145,7 +157,7 @@ const GroupChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
       </div>
       <Row style={{ height: "7%", backgroundColor: "lightgray" }} >
         <Col span={18} style={centerStyle}>
-          <Input style={sendInput} onChange={(e) => { setMessage(e.target.value) }} />
+          <Input value={message} style={sendInput} onKeyDown={send} onChange={(e) => { setMessage(e.target.value) }} />
         </Col>
         <Col span={6} style={centerStyle}>
           <Button onClick={sendMessage} style={sendButton}>send</Button>

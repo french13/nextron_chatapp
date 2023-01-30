@@ -96,6 +96,7 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
    
   }, [])
 
+  
 
   const sendMessage = async () => {
     const subDoc = String(new Date().getTime())
@@ -106,12 +107,25 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
       message: message,
       time: serverTimestamp(),
     });
+    setTimeout(()=>{
+      messaegesRef.current.scrollTop = messaegesRef.current.scrollHeight
+    }, 10)
+    setMessage("")
   }
+
+  const send = (e : any)=>{
+
+  
+    if(e.keyCode == 13){
+      sendMessage()
+    }
+  }
+
   const closeRoom = () => {
     setChatRoomId("")
   }
 
-  console.log(chatRoomId)
+  
   return (
 
     <ChatRoom>
@@ -139,12 +153,11 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
       </div>
       <Row style={{ height: "7%", backgroundColor: "lightgray" }} >
         <Col span={18} style={centerStyle}>
-          <Input style={sendInput} onChange={(e) => { setMessage(e.target.value) }} />
+          <Input value={message} style={sendInput}  onKeyDown={send} onChange={(e) => { setMessage(e.target.value)  }} />
         </Col>
         <Col span={6} style={centerStyle}>
           <Button onClick={sendMessage} style={sendButton}>send</Button>
         </Col>
-
       </Row>
     </ChatRoom>
   )

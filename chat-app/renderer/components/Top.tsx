@@ -67,7 +67,7 @@ const Top = () => {
                     {
                         isLogin == true ?
                             <span>{auth.currentUser.displayName}</span> :
-                            <span>sdf</span>
+                            null
                     }
 
                 </Col>
