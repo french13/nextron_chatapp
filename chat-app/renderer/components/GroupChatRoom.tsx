@@ -20,10 +20,11 @@ font-weight : 700;
 `
 
 const Message = styled.div`
-background-color : yellow;
+background-color :rgb(254, 224, 171);
 display : inline-block;
 padding : 10px;
-border-radius : 10px;
+border-radius : 10px 10px 0 10px;
+margin-top : 3px;
 `
 
 const messagesStyle: React.CSSProperties = {
@@ -32,6 +33,7 @@ const messagesStyle: React.CSSProperties = {
   flexDirection: "column",
   padding: "15px 20px",
   overflow: "scroll",
+  backgroundColor: "rgb(104, 135, 197)"
 }
 
 const centerStyle = {
@@ -50,6 +52,20 @@ const textRight: React.CSSProperties = {
   width: "100%",
   textAlign: "right",
   marginTop: "20px"
+}
+
+const sendInput: React.CSSProperties ={
+  margin: "auto 10px", height: "70%", 
+  border : "solid 2px rgb(104, 135, 197)", 
+  borderRadius : "10px" 
+ }
+ 
+const sendButton: React.CSSProperties = { 
+ margin: "auto 15px", 
+ height: "70%", width: "80%", 
+ backgroundColor:"rgb(104, 135, 197)", 
+ color : "white", 
+ borderRadius : "10px" 
 }
 
 interface chatRoomId {
@@ -91,7 +107,7 @@ const GroupChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
     const subDoc = String(new Date().getTime())
 
     await setDoc(doc(db, "groupChat", chatRoomId, chatRoomId, subDoc), {
-      id: auth.currentUser.uid,
+      id: subDoc,
       name: auth.currentUser.displayName,
       message: message,
       time: serverTimestamp(),
@@ -129,10 +145,10 @@ const GroupChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
       </div>
       <Row style={{ height: "7%", backgroundColor: "lightgray" }} >
         <Col span={18} style={centerStyle}>
-          <Input style={{ margin: "auto 10px", height: "70%" }} onChange={(e) => { setMessage(e.target.value) }} />
+          <Input style={sendInput} onChange={(e) => { setMessage(e.target.value) }} />
         </Col>
         <Col span={6} style={centerStyle}>
-          <Button onClick={sendMessage} style={{ margin: "auto 15px", height: "70%", width: "80%" }}>send</Button>
+          <Button onClick={sendMessage} style={sendButton}>send</Button>
         </Col>
 
       </Row>
