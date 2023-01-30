@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Col, Row } from 'antd'
-import { CheckOutlined } from '@ant-design/icons'
 import { db, auth } from '../../firebase'
-import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, } from "firebase/firestore";
 import PersonalChatRoom from '../components/PersonalChatRoom'
 
 
@@ -79,6 +78,7 @@ const PersonalChat = () => {
               <Col span={6} style={centerStyle}>
                 <Button onClick={() => { setOpenPersonalChatRoom(true); setChatRoomId(item.id) }}>입장하기</Button>
               </Col>
+
             </Row>
           )
         })

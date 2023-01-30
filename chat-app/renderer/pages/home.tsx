@@ -27,7 +27,6 @@ function Home() {
       <Head>
         <title>Home - Nextron (with-javascript-ant-design)</title>
       </Head>
-
     </React.Fragment>
   );
 };

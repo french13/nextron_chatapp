@@ -92,13 +92,10 @@ const SearchUser = () => {
               <Col span={4}>
                 <img src="/images/logo.png" alt="사진" width={60} />
               </Col>
-              <Col span={14}>
+              <Col span={16}>
                 <Name>{item.name}</Name>
               </Col>
-              <Col span={6} style={centerStyle}>
-                <Button >
-                  <StarOutlined />
-                </Button>
+              <Col span={4} style={centerStyle}>
                 <Button  onClick={() => { getPersonalChat(item) }} >
                   <MessageOutlined/>
                 </Button>

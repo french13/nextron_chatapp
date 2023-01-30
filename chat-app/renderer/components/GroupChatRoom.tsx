@@ -4,7 +4,6 @@ import { Button, Col, Input, Row } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import { db, auth } from '../../firebase'
 import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp, onSnapshot } from "firebase/firestore";
-import { Router, useRouter } from 'next/router'
 
 const ChatRoom = styled.div`
 position : absolute;
@@ -53,7 +52,7 @@ const GroupChatRoom = ({ chatRoomId }: chatRoomId) => {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState([])
 
- const router = useRouter()
+
 
   useEffect(() => {
     onSnapshot(

@@ -3,6 +3,7 @@ import { Form, Input, Button } from 'antd'
 import { useRouter } from 'next/router'
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
+import Link from 'next/link';
 
 const Login = () => {
     const router = useRouter()
@@ -13,18 +14,22 @@ const Login = () => {
     const login = ()=>{
         signInWithEmailAndPassword(auth, email, password)
         .then((res)=>{
-            alert(res.user.displayName+"님 반갑습니다")
-            router.push('/searchUser')
+            loginCheck()
         })
     }
 
-    useEffect(()=>{
+
+    const loginCheck = ()=>{
         onAuthStateChanged(auth, (user)=>{
             if(user){
-                router.push('/personalChat')
+                router.push('/searchUser')
+            }else{
+
             }
         })
-    },[])
+    }
+   
+ 
 
 
     return (
@@ -42,7 +47,9 @@ const Login = () => {
                         Log in
                     </Button>
                     <br /><br />
-                    <Button onClick={()=>{router.push('/register')}} style={{width : "100%"}}>회원가입</Button>
+                    <Link href={'/register'}>
+                    <Button style={{width : "100%"}}>회원가입</Button>
+                    </Link>
                 </Form.Item>
             </Form>
         </div>
