@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Col, Row, Button } from 'antd'
-import { StarOutlined, MessageOutlined } from '@ant-design/icons';
+import { StarOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import styled from 'styled-components'
 import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db, auth } from '../../firebase';
@@ -21,10 +21,24 @@ const centerStyle = {
 }
 
 const userBox = {
-  backgroundColor: "white",
+  backgroundColor: "rgb(254, 224, 171)",
   marginTop: "10px",
   padding: "5px",
-  borderRadius: "5px"
+  borderRadius: "5px",
+  border : "none",
+  color : "rgb(104, 135, 197)",
+  fontSize : "1.1rem"
+}
+
+const buttonStyle = {
+  border : "none",
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+  fontSize : "1.3rem",
+  borderRadius : "10px",
+  backgroundColor : "rgb(104, 135, 197)",
+  color : "white",
 }
 
 interface item {
@@ -81,9 +95,7 @@ const SearchUser = () => {
 
 
   return (
-    <div style={{ backgroundColor: "lightgray", padding: "10px 10px" }}>
-
-      <Input placeholder="Search User" style={{ border: 0, borderRadius: "5px" }} />
+    <div style={{ padding: "0px 10px", paddingTop : "70px" }}>
       {
         userList &&
         userList.map((item: item, i) => {
@@ -96,8 +108,8 @@ const SearchUser = () => {
                 <Name>{item.name}</Name>
               </Col>
               <Col span={4} style={centerStyle}>
-                <Button  onClick={() => { getPersonalChat(item) }} >
-                  <MessageOutlined/>
+                <Button style={buttonStyle}  onClick={() => { getPersonalChat(item) }} >
+                <PlusSquareOutlined />
                 </Button>
               </Col>
             </Row>

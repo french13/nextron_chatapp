@@ -1,0 +1,10 @@
+.div {
+  color: rgb(104, 135, 197);
+  color: rgb(240, 140, 142);
+  color: rgb(254, 224, 171);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;500&display=swap');
+* {
+    font-family: 'Kanit', sans-serif;
+}

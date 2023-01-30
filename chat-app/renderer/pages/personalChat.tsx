@@ -4,6 +4,7 @@ import { Button, Col, Row } from 'antd'
 import { db, auth } from '../../firebase'
 import { collection, getDocs, } from "firebase/firestore";
 import PersonalChatRoom from '../components/PersonalChatRoom'
+import {MessageOutlined} from '@ant-design/icons'
 
 
 const Name = styled.div`
@@ -23,18 +24,31 @@ const centerStyle = {
 }
 
 const userBox = {
-  backgroundColor: "white",
+  backgroundColor: "rgb(254, 224, 171)",
   marginTop: "10px",
   padding: "5px",
-  borderRadius: "5px"
+  borderRadius: "5px",
+  border : "none",
+  color : "rgb(104, 135, 197)",
+  fontSize : "1.1rem"
+}
+
+const buttonStyle = {
+  border : "none",
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+  fontSize : "1.3rem",
+  borderRadius : "10px",
+  backgroundColor : "rgb(104, 135, 197)",
+  color : "white",
 }
 
 
 
 const PersonalChat = () => {
   const [personalChatRoom, setPersonalChatRoom] = useState([])
-  const [openPersonalChatRoom, setOpenPersonalChatRoom] = useState(false)
-  const [chatRoomId, setChatRoomId] = useState("")
+  const [chatRoomId, setChatRoomId] = useState<string>("")
 
 
 
@@ -59,10 +73,10 @@ const PersonalChat = () => {
 
 
   return (
-    <div style={{ backgroundColor: "lightgray", padding: "10px 10px", position: "relative" }}>
+    <div style={{ padding: "0px 10px", paddingTop : "70px" }}>
       {
-        openPersonalChatRoom &&
-        <PersonalChatRoom chatRoomId={chatRoomId} />
+        chatRoomId &&
+        <PersonalChatRoom chatRoomId={chatRoomId} setChatRoomId = {setChatRoomId}/>
       }
       {
         personalChatRoom && 
@@ -76,7 +90,9 @@ const PersonalChat = () => {
                 <Name>{item.member}</Name>
               </Col>
               <Col span={6} style={centerStyle}>
-                <Button onClick={() => { setOpenPersonalChatRoom(true); setChatRoomId(item.id) }}>입장하기</Button>
+                <Button style={buttonStyle} onClick={() => { setChatRoomId(item.id) }}>
+                <MessageOutlined/>
+                  </Button>
               </Col>
 
             </Row>

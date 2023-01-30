@@ -30,12 +30,6 @@ const centerStyle = {
   alignItems: "center"
 }
 
-const userBox = {
-  backgroundColor: "white",
-  marginTop: "10px",
-  padding: "5px",
-  borderRadius: "5px"
-}
 const createRoomStyle = {
   backgroundColor: "white",
   marginTop: "10px",
@@ -46,10 +40,30 @@ const createRoomStyle = {
   alignItems: "center"
 }
 
+const userBox = {
+  backgroundColor: "rgb(254, 224, 171)",
+  marginTop: "10px",
+  padding: "5px",
+  borderRadius: "5px",
+  border : "none",
+  color : "rgb(104, 135, 197)",
+  fontSize : "1.1rem"
+}
+
+const buttonStyle = {
+  border : "none",
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+  fontSize : "1.3rem",
+  borderRadius : "10px",
+  backgroundColor : "rgb(104, 135, 197)",
+  color : "white",
+}
+
 
 const GroupChat = () => {
   const [groupChatRoom, setGroupChatRoom] = useState([])
-  const [openGroupChatRoom, setOpenGroupChatRoom] = useState(false)
   const [chatRoomId, setChatRoomId] = useState("")
 
 
@@ -105,13 +119,13 @@ const GroupChat = () => {
 
 
   return (
-    <div style={{ backgroundColor: "lightgray", padding: "10px 10px", position: "relative" }}>
+    <div style={{ padding: "0px 10px", paddingTop : "70px" }}>
       <Row style={createRoomStyle} >
-        <Button onClick={createGroupChat} style={{ border: "none" }}><UsergroupAddOutlined />단체 채팅방 만들기</Button>
+        <Button style={{ border: "none", backgroundColor : "rgb(104, 135, 197)", borderRadius:"10px", color : "white"}} onClick={createGroupChat} ><UsergroupAddOutlined />단체 채팅방 만들기</Button>
       </Row>
       {
-        openGroupChatRoom &&
-        <GroupChatRoom chatRoomId={chatRoomId} />
+        chatRoomId &&
+        <GroupChatRoom chatRoomId={chatRoomId} setChatRoomId={setChatRoomId}/>
       }
       {
         groupChatRoom &&
@@ -123,10 +137,12 @@ const GroupChat = () => {
               </Col>
               <Col span={14}>
                 <Name>{item.member[0]}</Name>
-                <Content><span>참가인원</span> {item.member.slice(1)}</Content>
+                <Content><span>참가인원 - </span> {item.member.slice(1)}</Content>
               </Col>
               <Col span={6} style={centerStyle}>
-                <Button onClick={() => { setOpenGroupChatRoom(true); setChatRoomId(item.id); joinGroupChatRoom(item.id); }}>입장하기</Button>
+                <Button style={buttonStyle} onClick={() => { setChatRoomId(item.id); joinGroupChatRoom(item.id); }}>
+                <MessageOutlined/>
+                  </Button>
               </Col>
             </Row>
           )

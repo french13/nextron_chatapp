@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState, Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import { Button, Col, Input, Row } from 'antd'
-import { CloseOutlined } from '@ant-design/icons'
+import { CloseOutlined, LeftOutlined } from '@ant-design/icons'
 import { db, auth } from '../../firebase'
 import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp, onSnapshot } from "firebase/firestore";
 
@@ -12,7 +12,7 @@ z-index : 5;
 width : 100%;
 left : 0;
 top : 0;
-height : 92vh;
+height : 100vh;
 `
 
 const Name = styled.div`
@@ -25,6 +25,14 @@ display : inline-block;
 padding : 10px;
 border-radius : 10px;
 `
+
+const messagesStyle: React.CSSProperties = {
+  height: "88%",
+  display: "flex",
+  flexDirection: "column",
+  padding: "15px 20px",
+  overflow: "scroll",
+}
 
 const centerStyle = {
   display: "flex",
@@ -45,12 +53,16 @@ const textRight: React.CSSProperties = {
 }
 
 interface chatRoomId {
-  chatRoomId: string
+  chatRoomId: string | null;
+  setChatRoomId: Dispatch<SetStateAction<string>> | null;
 }
 
-const GroupChatRoom = ({ chatRoomId }: chatRoomId) => {
+const GroupChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState([])
+  const messaegesRef = useRef(null)
+
+
 
 
 
@@ -65,6 +77,11 @@ const GroupChatRoom = ({ chatRoomId }: chatRoomId) => {
         setMessages(box)
       }
     );
+
+    setTimeout(() => {
+      messaegesRef.current.scrollTop = messaegesRef.current.scrollHeight
+    }, 10)
+
   }, [])
 
 
@@ -81,39 +98,45 @@ const GroupChatRoom = ({ chatRoomId }: chatRoomId) => {
     });
   }
 
+  const closeRoom = () => {
+    setChatRoomId("")
+  }
+
+
   return (
     <ChatRoom>
-    <Row style={{ height: "5%", backgroundColor: "lightgray", borderBottom: "solid 1px gray" }}>
-      <Col span={4}>
-      </Col>
-      <Col style={centerStyle} span={16}>단체 채팅방</Col>
-      <Col style={centerStyle} span={4}>
-        <CloseOutlined/>
-      </Col>
-    </Row>
-    <Row style={{ height: "88%", display: "flex", flexDirection: "column", padding: "15px 20px" }}>
-      {
-        messages &&
-        messages.map((item, i) => {
-          return (
-            <div key={item.id} style={item.name == auth.currentUser.displayName ? textRight : textLeft}>
-              <Name>{item.name}</Name>
-              <Message>{item.message}</Message>
-            </div>
-          )
-        })
-      }
-    </Row>
-    <Row style={{ height: "7%", backgroundColor: "lightgray" }} >
-      <Col span={18} style={centerStyle}>
-        <Input style={{ margin: "auto 10px", height: "70%" }} onChange={(e) => { setMessage(e.target.value) }} />
-      </Col>
-      <Col span={6} style={centerStyle}>
-        <Button onClick={sendMessage} style={{ margin: "auto 15px", height: "70%", width: "80%" }}>send</Button>
-      </Col>
+      <Row style={{ height: "5%", backgroundColor: "lightgray", borderBottom: "solid 1px gray" }}>
+        <Col onClick={closeRoom} style={centerStyle} span={4}>
+          <LeftOutlined />
+        </Col>
+        <Col style={centerStyle} span={16}>단체 채팅방</Col>
+        <Col style={centerStyle} span={4}>
 
-    </Row>
-  </ChatRoom> 
+        </Col>
+      </Row>
+      <div ref={messaegesRef} style={messagesStyle}>
+        {
+          messages &&
+          messages.map((item, i) => {
+            return (
+              <div key={item.id} style={item.name == auth.currentUser.displayName ? textRight : textLeft}>
+                <Name>{item.name}</Name>
+                <Message>{item.message}</Message>
+              </div>
+            )
+          })
+        }
+      </div>
+      <Row style={{ height: "7%", backgroundColor: "lightgray" }} >
+        <Col span={18} style={centerStyle}>
+          <Input style={{ margin: "auto 10px", height: "70%" }} onChange={(e) => { setMessage(e.target.value) }} />
+        </Col>
+        <Col span={6} style={centerStyle}>
+          <Button onClick={sendMessage} style={{ margin: "auto 15px", height: "70%", width: "80%" }}>send</Button>
+        </Col>
+
+      </Row>
+    </ChatRoom>
   )
 }
 
