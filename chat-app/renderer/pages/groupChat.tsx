@@ -78,7 +78,7 @@ const GroupChat = () => {
 
   useEffect(() => {
     getGroupChat()
-  }, [])
+  }, [chatRoomId])
 
 
   const joinGroupChatRoom = async (id: string) => {
@@ -113,6 +113,7 @@ const GroupChat = () => {
       date: serverTimestamp(),
     }).then(() => {
       alert("단체방이 생성되었습니다.")
+      setChatRoomId(docId)
     })
   }
 

@@ -68,7 +68,7 @@ const PersonalChat = () => {
 
   useEffect(() => {
     getPersonalChat()
-  }, [])
+  }, [chatRoomId])
 
 
 

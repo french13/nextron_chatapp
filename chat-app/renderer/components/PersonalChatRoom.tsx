@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button, Col, Input, Row } from 'antd'
 import { CloseOutlined, LeftOutlined } from '@ant-design/icons'
 import { db, auth } from '../../firebase'
-import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp, onSnapshot, deleteDoc } from "firebase/firestore";
 import { useRouter } from 'next/router'
 
 const ChatRoom = styled.div`
@@ -125,6 +125,13 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
     setChatRoomId("")
   }
 
+  const deleteRoom = async()=>{
+    await deleteDoc(doc(db, "personalChat", chatRoomId))
+    .then(()=>{
+      setChatRoomId("")
+    })
+  }
+
   
   return (
 
@@ -134,8 +141,8 @@ const PersonalChatRoom = ({ chatRoomId, setChatRoomId }: chatRoomId) => {
           <LeftOutlined />
         </Col>
         <Col style={centerStyle} span={16}>1대1 채팅방</Col>
-        <Col span={4}>
-
+        <Col style={centerStyle}  span={4}>
+          <button style={{border : "none", borderRadius : "10px", backgroundColor : "rgb(240, 140, 142)", color : "white"}} onClick={deleteRoom}>방 없애기</button>
         </Col>
       </Row>
       <div id="scroll" ref={messaegesRef} style={messagesStyle}>
