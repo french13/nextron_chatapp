@@ -14,11 +14,18 @@ $ npm install && npm i
 
 ```
 서버 실행 (http://localhost:8888)
-$ npm start # or npm run dev
+$ npm run dev
 ```
 ```
 build
 $ npm run build   후 dist 폴더
+```
+```
+계정
+id : test1@gmail.com   pw : test1234
+id : test2@gmail.com   pw : test1234
+id : test3@gmail.com   pw : test1234
+id : test4@gmail.com   pw : test1234
 ```
 
 
